@@ -33,12 +33,15 @@ import {
   GitMerge,
   ShoppingCart,
   Save,
-  RotateCw
+  RotateCw,
+  Award
 } from 'lucide-react';
 
 interface ProjectWorkspaceProps {
   project: ProjectData;
   onBack: () => void;
+  onStartQuiz?: () => void;
+  hasBadge?: boolean;
 }
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -145,7 +148,7 @@ const StepDetail = ({ step }: { step: any }) => {
   );
 };
 
-const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) => {
+const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack, onStartQuiz, hasBadge }) => {
   const [code, setCode] = useState(project.starterCode);
   const [output, setOutput] = useState('');
   const [imageData, setImageData] = useState<string | null>(null);
@@ -248,14 +251,12 @@ const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) 
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       <div className="flex flex-1 overflow-hidden">
-        {/* Left Sidebar - 任务介绍 */}
         <div 
           ref={leftPanelRef}
           className="bg-white flex flex-col shadow-sm transition-all duration-300 ease-in-out overflow-hidden"
           style={{ width: sidebarCollapsed ? '50px' : '500px' }}
         >
           <div className="flex-1 overflow-auto">
-            {/* Header */}
             <div className="p-5 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
               <div className="flex items-center justify-between mb-4">
                 {!sidebarCollapsed && (
@@ -276,7 +277,15 @@ const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) 
               </div>
               {!sidebarCollapsed && (
                 <>
-                  <h2 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{project.title}</h2>
+                  <div className="flex items-center gap-3 mb-2">
+                    <h2 className="text-xl font-bold text-gray-900 leading-tight">{project.title}</h2>
+                    {hasBadge && (
+                      <span className="flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+                        <Award className="w-3 h-3" />
+                        已通过
+                      </span>
+                    )}
+                  </div>
                   <p className="text-gray-600 text-sm leading-relaxed mb-4">{project.description}</p>
                   <div className="flex gap-2">
                     <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-semibold border border-blue-200">
@@ -290,7 +299,6 @@ const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) 
               )}
             </div>
             
-            {/* Tutorial Content */}
             {!sidebarCollapsed && (
               <div className="p-6 space-y-6">
                 {project.tutorials.map((section, sectionIdx) => (
@@ -310,7 +318,6 @@ const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) 
                   </div>
                 ))}
                 
-                {/* Dataset Preview */}
                 <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mt-8">
                   <div className="px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
                     <div className="flex items-center gap-3">
@@ -334,7 +341,6 @@ const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) 
           </div>
         </div>
 
-        {/* Resize Handle - Between Left and Right Panels */}
         {!sidebarCollapsed && (
           <div 
             className="w-6 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 cursor-col-resize hover:bg-gradient-to-r hover:from-blue-300 hover:via-blue-400 hover:to-blue-300 transition-all duration-300 flex items-center justify-center group border-y border-gray-300 hover:border-blue-300"
@@ -348,9 +354,7 @@ const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) 
           </div>
         )}
 
-        {/* Right Workspace */}
         <div className="flex-1 flex flex-col bg-white border-l border-gray-200">
-          {/* Toolbar */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 px-5 py-4 flex items-center gap-4 shadow-sm">
             <button 
               className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-5 py-2.5 rounded-xl transition-all duration-300 font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
@@ -393,15 +397,37 @@ const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) 
               )}
             </button>
             <div className="flex-1" />
+            
+            {onStartQuiz && (
+              <button 
+                className={`px-5 py-2.5 rounded-xl transition-all duration-300 font-semibold flex items-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 ${
+                  hasBadge 
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white' 
+                    : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white'
+                }`}
+                onClick={onStartQuiz}
+              >
+                {hasBadge ? (
+                  <>
+                    <Award className="w-4 h-4" />
+                    重新测试
+                  </>
+                ) : (
+                  <>
+                    <Trophy className="w-4 h-4" />
+                    开始测试
+                  </>
+                )}
+              </button>
+            )}
+            
             <div className="flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2 rounded-xl border border-gray-200 shadow-sm">
               <CheckCircle2 className="w-4 h-4 text-green-600" />
               <span className="font-medium">自动保存</span>
             </div>
           </div>
 
-          {/* Editor and Output - 上下布局 */}
           <div ref={containerRef} className="flex-1 flex flex-col overflow-hidden">
-            {/* Code Editor */}
             <div 
               ref={editorPanelRef}
               className="border-b border-gray-200 flex flex-col bg-gray-900"
@@ -416,7 +442,6 @@ const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) 
               </div>
             </div>
             
-            {/* Resize Handle - Vertical */}
             <div 
               className="h-6 bg-gradient-to-b from-gray-200 via-gray-300 to-gray-200 cursor-row-resize hover:bg-gradient-to-b hover:from-blue-300 hover:via-blue-400 hover:to-blue-300 transition-all duration-300 flex items-center justify-center group border-x border-gray-300 hover:border-blue-300"
               onMouseDown={handleVerticalResize}
@@ -428,7 +453,6 @@ const ProjectWorkspace: React.FC<ProjectWorkspaceProps> = ({ project, onBack }) 
               </div>
             </div>
             
-            {/* Output and Reference Panel */}
             <div className="flex-1 flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
               {showAnswer ? (
                 <div className="flex-1 flex flex-col">

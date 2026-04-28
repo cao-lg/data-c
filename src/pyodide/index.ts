@@ -114,3 +114,8 @@ class PyodideManager {
 
 // 导出单例实例
 export const pyodideManager = new PyodideManager();
+
+// 导出便捷函数
+export const runPythonCode = async (code: string, dataFiles: Array<{ name: string; content: string }> = []): Promise<{ stdout: string; imageData: string | null }> => {
+  return pyodideManager.runCode(code, dataFiles);
+};

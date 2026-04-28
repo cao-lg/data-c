@@ -1,0 +1,45 @@
+InvoiceNo,Description,Quantity,UnitPrice
+1001,iPhone 15,2,7999
+1001,AirPods Pro,1,1899
+1001,AppleCare+,1,1299
+1002,MacBook Air,1,9999
+1002,Magic Mouse,1,699
+1002,AppleCare+,1,1599
+1003,Nike Air Max,2,899
+1003,Nike Socks,3,49
+1004,iPhone 15 Pro,1,9999
+1004,AirPods Max,1,4399
+1004,Apple Watch,1,2999
+1005,MacBook Pro,1,14999
+1005,Magic Keyboard,1,999
+1006,Adidas Superstar,3,799
+1006,Adidas Shirt,2,299
+1007,iPhone 15,1,7999
+1007,AirPods Pro,2,1899
+1008,Nike Dunk Low,2,699
+1008,Nike Hoodie,1,499
+1009,MacBook Air,2,9999
+1009,Magic Trackpad,1,899
+1010,Apple Watch,2,2999
+1010,AirPods Pro,1,1899
+1011,Nike Air Force 1,1,749
+1011,Nike Cap,1,99
+1012,Adidas Ultraboost,2,1099
+1012,Adidas Jacket,1,599
+1013,iPhone 15 Pro,2,9999
+1013,AppleCare+,2,1499
+1014,MacBook Pro,1,14999
+1014,Pro Display XDR,1,39999
+1015,Nike ZoomX,3,1199
+1015,Nike Shorts,2,199
+1016,Apple Watch Ultra,1,6499
+1016,AirPods Max,1,4399
+1017,Adidas NMD,1,949
+1017,Adidas Pants,1,349
+1018,iPhone 15,3,7999
+1018,AppleCare+,3,1299
+1019,Nike Air Jordan,2,1299
+1019,Nike Jacket,1,799
+1020,MacBook Air,1,9999
+1020,Magic Mouse,1,699
+1020,Magic Keyboard,1,999

@@ -33,6 +33,10 @@ function App() {
     }
   };
 
+  const handleQuizBack = () => {
+    setCurrentView('project');
+  };
+
   const handleBadgeEarned = (badge: Badge) => {
     setBadges(prev => {
       const existing = prev.find(b => b.projectId === badge.projectId);
@@ -46,7 +50,12 @@ function App() {
   return (
     <>
       {currentView === 'quiz' && selectedProject ? (
-        <QuizPage onBadgeEarned={handleBadgeEarned} />
+        <QuizPage 
+          projectId={selectedProject.id} 
+          onBadgeEarned={handleBadgeEarned}
+          onBack={handleQuizBack}
+          onHome={() => { setCurrentView('list'); setSelectedProject(null); }}
+        />
       ) : currentView === 'project' && selectedProject ? (
         <ProjectWorkspace 
           project={selectedProject} 

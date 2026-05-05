@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { quizConfigs, QuizQuestion, QuizResult, Badge, badgeIcons, badgeNames } from '../../data/quizData';
 import CodeEditor from '../CodeEditor';
 import { runPythonCode } from '../../pyodide';
@@ -17,20 +16,20 @@ import {
 } from 'lucide-react';
 
 interface QuizPageProps {
+  projectId: string;
   onBadgeEarned?: (badge: Badge) => void;
+  onBack: () => void;
+  onHome: () => void;
 }
 
-const QuizPage: React.FC<QuizPageProps> = ({ onBadgeEarned }) => {
-  const { projectId } = useParams<{ projectId: string }>();
-  const navigate = useNavigate();
-  
+const QuizPage: React.FC<QuizPageProps> = ({ projectId, onBadgeEarned, onBack, onHome }) => {
   const quizConfig = quizConfigs.find(q => q.projectId === projectId);
   
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState<QuizResult | null>(null);
-  const [timeLeft, setTimeLeft] = useState(quizConfig?.timeLimit || 15);
+  const [timeLeft, setTimeLeft] = useState((quizConfig?.timeLimit || 15) * 60);
   const [isRunning, setIsRunning] = useState(true);
   const [codeOutput, setCodeOutput] = useState<string>('');
   const [isExecuting, setIsExecuting] = useState(false);
@@ -159,7 +158,7 @@ const QuizPage: React.FC<QuizPageProps> = ({ onBadgeEarned }) => {
       correctCount,
       wrongCount,
       skippedCount,
-      timeSpent: (quizConfig.timeLimit * 60) - timeLeft,
+      timeSpent: quizConfig.timeLimit * 60 - timeLeft,
       answers,
       passed,
       completedAt: new Date().toISOString()
@@ -213,7 +212,7 @@ const QuizPage: React.FC<QuizPageProps> = ({ onBadgeEarned }) => {
     setAnswers({});
     setShowResult(false);
     setResult(null);
-    setTimeLeft(quizConfig?.timeLimit || 15);
+    setTimeLeft((quizConfig?.timeLimit || 15) * 60);
     setIsRunning(true);
     setCodeOutput('');
     setShowExplanation(null);
@@ -228,7 +227,7 @@ const QuizPage: React.FC<QuizPageProps> = ({ onBadgeEarned }) => {
           <h2 className="text-2xl font-bold mb-2">测试未找到</h2>
           <p className="text-gray-400 mb-4">该项目暂无测试内容</p>
           <button
-            onClick={() => navigate('/')}
+            onClick={onBack}
             className="px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
           >
             返回首页
@@ -339,14 +338,14 @@ const QuizPage: React.FC<QuizPageProps> = ({ onBadgeEarned }) => {
                 重新测试
               </button>
               <button
-                onClick={() => navigate(`/project/${projectId}`)}
+                onClick={onBack}
                 className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
               >
                 <BookOpen className="w-5 h-5" />
                 返回学习
               </button>
               <button
-                onClick={() => navigate('/')}
+                onClick={onHome}
                 className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
               >
                 <Home className="w-5 h-5" />
